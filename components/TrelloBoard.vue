@@ -74,7 +74,7 @@ const altKey = useKeyModifier("Alt");
             </template>
           </draggable>
           <footer>
-            <NewTask @add-task="column.tasks.push($event)" />
+            <TrelloBoardNewTask @add-task="column.tasks.push($event)" />
           </footer>
         </div>
       </template>

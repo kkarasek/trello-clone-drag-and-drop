@@ -25,8 +25,10 @@ const createTask = (e: Event) => {
 
 <template>
   <div>
+    <span id="task-label" class="sr-only">Add new task</span>
     <textarea
       v-model="title"
+      aria-labelledby="task-label"
       @keydown.tab="createTask"
       @keyup.enter="createTask"
       class="bg-transparent text-gray-300/50 text-sm p-2 mt-4 rounded text-white transition-all cursor-pointer"
