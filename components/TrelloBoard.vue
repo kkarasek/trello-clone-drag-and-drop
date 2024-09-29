@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { nanoid } from "nanoid";
+import draggable from "vuedraggable";
+
 import type { Column } from "~/types";
 
 const columns = ref<Column[]>([
@@ -40,22 +42,35 @@ const columns = ref<Column[]>([
 </script>
 
 <template>
-  <div class="flex gap-4 overflow-x-auto items-start">
-    <div
-      v-for="column in columns"
-      :id="column.id"
-      class="column bg-transparent border border-gray-300/50 p-5 rounded min-w-[250px]"
+  <div>
+    <draggable
+      v-model="columns"
+      group="columns"
+      item-key="id"
+      class="flex gap-4 overflow-x-auto items-start"
     >
-      <header class="text-white text-xl font-semibold">{{ column.title }}</header>
-      <TrelloBoardTask
-        v-for="task in column.tasks"
-        :key="task.id"
-        :task="task"
-        class="mt-4"
-      />
-      <footer>
-        <button class="bg-transparent text-gray-300/50 text-sm p-2 mt-4 rounded  hover:text-white transition-all">+ Add New Task</button>
-      </footer>
-    </div>
+      <template #item="{ element: column }: { element: Column }">
+        <div
+          class="column bg-transparent border border-gray-300/50 p-5 rounded min-w-[250px]"
+        >
+          <header class="text-white text-xl font-semibold">
+            {{ column.title }}
+          </header>
+          <TrelloBoardTask
+            v-for="task in column.tasks"
+            :key="task.id"
+            :task="task"
+            class="mt-4"
+          />
+          <footer>
+            <button
+              class="bg-transparent text-gray-300/50 text-sm p-2 mt-4 rounded hover:text-white transition-all"
+            >
+              + Add New Task
+            </button>
+          </footer>
+        </div>
+      </template>
+    </draggable>
   </div>
 </template>
