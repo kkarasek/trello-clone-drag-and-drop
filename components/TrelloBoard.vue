@@ -6,7 +6,7 @@ import type { Column } from "~/types";
 
 const columns = ref<Column[]>([
   {
-    title: "Backlog",
+    title: "Backlog 📦",
     id: nanoid(),
     tasks: [
       { id: nanoid(), title: "Add GET endpoint", createdAt: new Date() },
@@ -19,22 +19,22 @@ const columns = ref<Column[]>([
     ],
   },
   {
-    title: "Ready For Dev",
+    title: "Ready For Dev 🚀",
     id: nanoid(),
     tasks: [],
   },
   {
-    title: "In Progress",
+    title: "In Progress 🛠",
     id: nanoid(),
     tasks: [],
   },
   {
-    title: "In QA",
+    title: "In QA 🧪",
     id: nanoid(),
     tasks: [],
   },
   {
-    title: "Done",
+    title: "Done 🎉",
     id: nanoid(),
     tasks: [],
   },
@@ -47,6 +47,8 @@ const columns = ref<Column[]>([
       v-model="columns"
       group="columns"
       item-key="id"
+      handle="#drag-handle"
+      :animation="150"
       class="flex gap-4 overflow-x-auto items-start"
     >
       <template #item="{ element: column }: { element: Column }">
@@ -54,6 +56,7 @@ const columns = ref<Column[]>([
           class="column bg-transparent border border-gray-300/50 p-5 rounded min-w-[250px]"
         >
           <header class="text-white text-xl font-semibold">
+            <DragHandle />
             {{ column.title }}
           </header>
           <TrelloBoardTask
