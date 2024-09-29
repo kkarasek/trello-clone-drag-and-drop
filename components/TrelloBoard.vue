@@ -40,7 +40,7 @@ const columns = ref<Column[]>([
   },
 ]);
 
-const alt = useKeyModifier("Alt");
+const altKey = useKeyModifier("Alt");
 </script>
 
 <template>
@@ -63,7 +63,7 @@ const alt = useKeyModifier("Alt");
           </header>
           <draggable
             v-model="column.tasks"
-            :group="{ name: 'tasks', pull: alt ? 'clone' : true }"
+            :group="{ name: 'tasks', pull: altKey ? 'clone' : true }"
             item-key="id"
             :animation="150"
           >
@@ -74,11 +74,7 @@ const alt = useKeyModifier("Alt");
             </template>
           </draggable>
           <footer>
-            <button
-              class="bg-transparent text-gray-300/50 text-sm p-2 mt-4 rounded hover:text-white transition-all"
-            >
-              + Add New Task
-            </button>
+            <NewTask @add-task="(task) => column.tasks.push(task)" />
           </footer>
         </div>
       </template>
