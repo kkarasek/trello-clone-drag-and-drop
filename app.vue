@@ -4,5 +4,14 @@ const name = "Kuba";
 </script>
 
 <template>
-  <h1 class="text-3xl text-blue-500">Hello World!</h1>
+  <div class="p-10 h-[100vh] bg-black overflow-auto">
+    <h1 class="mb-10">
+      <img
+        src="https://vueschool.io/img/logo/vueschool_logo_multicolor_negative.svg"
+        alt="Vue logo"
+        class="h-[40px] mr-4"
+      />
+    </h1>
+    <TrelloBoard />
+  </div>
 </template>
