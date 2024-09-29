@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   ssr: false,
   app: {
 		head: {
-			title: 'Nuxt Trello Clone',
+			title: 'Trello Clone',
 			htmlAttrs: {
 				lang: 'en'
 			}
