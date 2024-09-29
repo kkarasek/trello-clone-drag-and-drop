@@ -7,7 +7,21 @@ defineProps<{
 </script>
 
 <template>
-  <div :title="task.createdAt.toLocaleDateString()" class="task bg-gray-300/50 shadow-sm max-w-[250px] rounded p-2 mt-4 cursor-pointer">
+  <div
+    :title="task.createdAt.toLocaleDateString()"
+    class="task bg-gray-300/50 shadow-sm max-w-[250px] rounded p-2 mt-4 cursor-pointer"
+  >
     <span class="text-white text-sm">{{ task.title }}</span>
   </div>
 </template>
+
+<style>
+.sortable-ghost .task {
+  position: relative;
+}
+
+.sortable-ghost .task::after {
+  content: "";
+  @apply absolute inset-0 bg-zinc-900 rounded;
+}
+</style>
