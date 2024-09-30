@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { nextTick } from "vue";
 import { nanoid } from "nanoid";
 import draggable from "vuedraggable";
 
@@ -41,25 +42,49 @@ const columns = ref<Column[]>([
 ]);
 
 const altKey = useKeyModifier("Alt");
+
+const newColumnRef = ref<HTMLInputElement | null>(null);
+
+const createColumn = async () => {
+  const column: Column = {
+    id: nanoid(),
+    title: "",
+    tasks: [],
+  };
+
+  columns.value.push(column);
+  await nextTick();
+  (
+    document.querySelector(".column:last-of-type input") as HTMLInputElement
+  )?.focus();
+};
 </script>
 
 <template>
-  <div>
+  <div class="flex items-start gap-4 overflow-x-auto">
     <draggable
       v-model="columns"
       group="columns"
       item-key="id"
       handle="#drag-handle"
       :animation="150"
-      class="flex gap-4 overflow-x-auto items-start"
+      class="flex gap-4 items-start"
     >
       <template #item="{ element: column }: { element: Column }">
         <div
           class="column bg-transparent border border-gray-300/50 p-5 rounded min-w-[250px] min-h-[300px]"
         >
-          <header class="text-white text-xl font-semibold">
+          <header class="flex gap-1 text-white text-xl font-semibold">
             <DragHandle />
-            {{ column.title }}
+            <span id="column-title" class="sr-only">Column Title</span>
+            <input
+              type="text"
+              v-model="column.title"
+              class="w-full bg-transparent focus-visible:outline-none"
+              @keyup.enter="($event.target as HTMLInputElement).blur()"
+              @keydown.backspace="column.title === '' ? columns = columns.filter(c => c.id !== column.id) : null"
+              aria-labelledby="column-title"
+            />
           </header>
           <draggable
             v-model="column.tasks"
@@ -69,7 +94,12 @@ const altKey = useKeyModifier("Alt");
           >
             <template #item="{ element: task }: { element: Task }">
               <div>
-                <TrelloBoardTask :task="task" @delete-task="column.tasks = column.tasks.filter((t) => t.id !== $event)" />
+                <TrelloBoardTask
+                  :task="task"
+                  @delete-task="
+                    column.tasks = column.tasks.filter((t) => t.id !== $event)
+                  "
+                />
               </div>
             </template>
           </draggable>
@@ -79,5 +109,6 @@ const altKey = useKeyModifier("Alt");
         </div>
       </template>
     </draggable>
+    <AddColumnButton @add-column="createColumn" />
   </div>
 </template>
