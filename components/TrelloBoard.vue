@@ -5,7 +5,7 @@ import draggable from "vuedraggable";
 
 import type { Column, Task } from "~/types";
 
-const columns = ref<Column[]>([
+const columns = useLocalStorage<Column[]>("trelloBoard", [
   {
     title: "Backlog 📦",
     id: nanoid(),
@@ -40,6 +40,15 @@ const columns = ref<Column[]>([
     tasks: [],
   },
 ]);
+
+// sync with server - placeholder
+watch(
+  columns,
+  () => {
+    // fetch request
+  },
+  { deep: true }
+);
 
 const altKey = useKeyModifier("Alt");
 
@@ -82,7 +91,11 @@ const createColumn = async () => {
               v-model="column.title"
               class="w-full bg-transparent focus-visible:outline-none"
               @keyup.enter="($event.target as HTMLInputElement).blur()"
-              @keydown.backspace="column.title === '' ? columns = columns.filter(c => c.id !== column.id) : null"
+              @keydown.backspace="
+                column.title === ''
+                  ? (columns = columns.filter((c) => c.id !== column.id))
+                  : null
+              "
               aria-labelledby="column-title"
             />
           </header>
